@@ -1,0 +1,3 @@
+library variables;
+
+String status = "";
