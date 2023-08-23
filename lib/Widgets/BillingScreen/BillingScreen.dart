@@ -68,7 +68,7 @@ class _BillingScreenState extends State<BillingScreen> {
           Uri.parse('https://api.stripe.com/v1/payment_intents'),
           headers: {
             'Authorization':
-                'Bearer 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',
+                'Bearer ${secret_key}',
             'Content-Type': 'application/x-www-form-urlencoded'
           },
           body: body,
