@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/Container/ContainerBlock/ContainerBlock.dart';
 import 'package:login_screen/Widgets/Container/ContainerPage.dart';
+import 'package:login_screen/Widgets/Date&Time/Date&Time.dart';
 
 class SlotContainer extends StatelessWidget {
   const SlotContainer(
@@ -18,7 +19,6 @@ class SlotContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
@@ -41,8 +41,8 @@ class SlotContainer extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    ContainerPage(name: shootName, snap: snap, description: description)),
+                builder: (context) => DateAndTime(
+                    name: shootName, snap: snap, description: description)),
           );
         },
         child: Stack(
@@ -65,8 +65,9 @@ class SlotContainer extends StatelessWidget {
                                     bottomLeft: Radius.circular(0),
                                     bottomRight: Radius.circular(0)),
                                 image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(image),)),
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(image),
+                                )),
                           ),
                           Container(
                             height: 280,
@@ -101,44 +102,50 @@ class SlotContainer extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            child: snap["offer"]? Column(
-                              children: [
-                                Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 3),
-                            child: Divider(
-                              thickness: 0.2,
-                              color: const Color.fromARGB(255, 37, 37, 37),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            alignment: Alignment.centerRight,
-                            child: Row(children: [
-                              Container(
-                                child: Icon(
-                                  Icons.offline_bolt,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2)),
-                              Container(
-                                child: Text(
-                                  "Offers Avialable",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 0, 140, 255),
-                                          fontSize: 12)),
-                                ),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2)),
-                            ]),
-                          )
-                              ],
-                            ): Container(),
+                            child: snap["offer"]
+                                ? Column(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 3),
+                                        child: Divider(
+                                          thickness: 0.2,
+                                          color: const Color.fromARGB(
+                                              255, 37, 37, 37),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        alignment: Alignment.centerRight,
+                                        child: Row(children: [
+                                          Container(
+                                            child: Icon(
+                                              Icons.offline_bolt,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2)),
+                                          Container(
+                                            child: Text(
+                                              "Offers Avialable",
+                                              style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 0, 140, 255),
+                                                      fontSize: 12)),
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2)),
+                                        ]),
+                                      )
+                                    ],
+                                  )
+                                : Container(),
                           ),
                         ],
                       ),

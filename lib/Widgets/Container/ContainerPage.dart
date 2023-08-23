@@ -1,23 +1,76 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/BillingScreen/BillingScreen.dart';
 import 'package:login_screen/Widgets/Container/ContainerBlock/ContainerBlock.dart';
-import 'package:login_screen/Widgets/Container/ContainerDates/ContainerDates.dart';
+import 'package:login_screen/Widgets/Container/SpecialOffer/SpecialOffer.dart';
 
 class ContainerPage extends StatelessWidget {
   const ContainerPage(
       {super.key,
       required this.name,
       required this.snap,
+      required this.date,
+      required this.time,
       required this.description});
 
+  final List date;
   final String name;
   final String description;
   final snap;
+  final time;
 
   @override
   Widget build(BuildContext context) {
+    List cart = [];
+
     final List lenOfCatagory = snap?["catagory"];
+
+    void handleChange(String catagoryName, int price, String shootName,
+        List time, List date, bool isAdded) async {
+      if (isAdded) {
+        cart.add({
+          "CatagoryName": catagoryName,
+          "Price": price,
+          "shootName": shootName,
+          "timeScheduled": time,
+          "date": date
+        });
+
+        print(cart);
+
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser!.phoneNumber)
+            .update({"cart": cart});
+      } else {
+        Map<String, dynamic> itemToRemove = {
+          "CatagoryName": catagoryName,
+          "Price": price,
+          "shootName": shootName,
+          "timeScheduled": time,
+          "date": date,
+        };
+
+        // Find the index of the item in the cart list that matches the properties
+        int indexToRemove = cart.indexWhere((item) =>
+            item["CatagoryName"] == itemToRemove["CatagoryName"] &&
+            item["Price"] == itemToRemove["Price"] &&
+            item["shootName"] == itemToRemove["shootName"] &&
+            item["timeScheduled"] == itemToRemove["timeScheduled"] &&
+            item["date"] == itemToRemove["date"]);
+
+        if (indexToRemove != -1) {
+          cart.removeAt(indexToRemove);
+        }
+
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc("+919043870363")
+            .update({"cart": cart});
+      }
+    }
 
     _CartItem() {
       return Container(
@@ -86,27 +139,42 @@ class ContainerPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         foregroundColor: Colors.black54,
-        backgroundColor: Colors.white70,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Text(
-            name,
-            style:
-                GoogleFonts.poppins(textStyle: TextStyle(color: Colors.black, fontSize: 17)),
-          ),
+          name,
+          style: GoogleFonts.poppins(
+              textStyle: TextStyle(color: Colors.black, fontSize: 17)),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-            ContainerDates(),
-            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
             for (var i = 0; i < lenOfCatagory.length; i++)
-              ContainerBlock(
-                  image: lenOfCatagory[i]["image"],
-                  description: description,
-                  images: lenOfCatagory[i]["images"],
-                  name: lenOfCatagory[i]["name"],
-                  offer: lenOfCatagory[i]["offer"],
-                  price: lenOfCatagory[i]["price"])
+              lenOfCatagory[i]["special"] == false
+                  ? ContainerBlock(
+                      time: time,
+                      date: date,
+                      shootname: name,
+                      handleChange: handleChange,
+                      image: lenOfCatagory[i]["image"],
+                      description: description,
+                      images: lenOfCatagory[i]["images"],
+                      name: lenOfCatagory[i]["name"],
+                      offer: lenOfCatagory[i]["offer"],
+                      price: lenOfCatagory[i]["price"])
+                  : SpecialOffer(
+                      time: time,
+                      date: date,
+                      handleChange: handleChange,
+                      shootname: name,
+                      image: lenOfCatagory[i]["image"],
+                      description: description,
+                      images: lenOfCatagory[i]["images"],
+                      name: lenOfCatagory[i]["name"],
+                      offer: lenOfCatagory[i]["offer"],
+                      price: lenOfCatagory[i]["price"]),
+            const Padding(padding: EdgeInsets.only(bottom: 80))
           ],
         ),
       ),
@@ -146,32 +214,6 @@ class ContainerPage extends StatelessWidget {
                                       padding:
                                           EdgeInsets.symmetric(vertical: 15)),
                                   _CartItem(),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Divider(
-                                      color: Color.fromARGB(255, 46, 46, 46),
-                                      thickness: 0.2,
-                                    ),
-                                  ),
-                                  _CartItem(),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Divider(
-                                      color: Color.fromARGB(255, 46, 46, 46),
-                                      thickness: 0.2,
-                                    ),
-                                  ),
-                                  _CartItem(),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Divider(
-                                      color: Color.fromARGB(255, 46, 46, 46),
-                                      thickness: 0.2,
-                                    ),
-                                  ),
                                   Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 2)),
@@ -182,11 +224,11 @@ class ContainerPage extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => BillingScreen(),
-                                          )
-                                        );
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BillingScreen(name: name, snap: snap, date: date, time: time, description: description, image: snap["image"],),
+                                            ));
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -233,7 +275,7 @@ class ContainerPage extends StatelessWidget {
                               textStyle: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 19)),
+                                  fontSize: 17)),
                         ),
                       ],
                     ),
@@ -244,11 +286,12 @@ class ContainerPage extends StatelessWidget {
                 // alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 255, 17, 0),
+                  border: Border.all(color: Color.fromARGB(171, 255, 255, 255)),
                   boxShadow: [
                     // BoxShadow(
                     //     color: Colors.white, spreadRadius: 5, blurRadius: 70),
-                    BoxShadow(
-                        color: Colors.white, spreadRadius: 1, blurRadius: 5),
+                    // BoxShadow(
+                    //     color: Colors.white, spreadRadius: 1, blurRadius: 5),
                   ],
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -257,12 +300,9 @@ class ContainerPage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BillingScreen(),
-                        )
-                      );
+                          builder: (context) => BillingScreen(name: name, snap: snap, date: date, time: time, description: description, image: snap["image"],),
+                        ));
                   },
-                  highlightColor: Color.fromARGB(255, 255, 17, 0),
-                  splashColor: const Color.fromARGB(255, 255, 17, 0),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),

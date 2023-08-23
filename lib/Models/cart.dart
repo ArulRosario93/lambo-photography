@@ -6,6 +6,6 @@ class Cart {
   });
 
   Map<String, dynamic> toJson() => {
-        "items": []
+        "cart": []
       };
 }

@@ -11,15 +11,23 @@ class ContainerBlockTemplate extends StatefulWidget {
       required this.name,
       required this.description,
       required this.images,
+      required this.shootname,
       required this.offer,
+      required this.time,
+      required this.handleChange,
+      required this.date,
       required this.price});
 
   final String image;
   final int price;
+  final handleChange;
+  final List date;
+  final String shootname;
   final int offer;
   final String name;
   final String description;
   final List images;
+  final time;
 
   @override
   State<ContainerBlockTemplate> createState() => _ContainerBlockTemplateState();
@@ -30,12 +38,22 @@ class _ContainerBlockTemplateState extends State<ContainerBlockTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    void handleChange = () async {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.phoneNumber)
-          .update({"orders": ["ohh yea"]});
-    };
+    void handleChange() {
+      setState(() {
+        isAdded = !isAdded;
+      });
+
+      widget.handleChange(widget.name, widget.price, widget.shootname,
+          widget.time, widget.date, isAdded);
+    }
+
+    String shootName;
+
+    if (widget.name.length > 11) {
+      shootName = widget.name.substring(0, 8) + "...";
+    } else {
+      shootName = widget.name;
+    }
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18),
@@ -51,164 +69,149 @@ class _ContainerBlockTemplateState extends State<ContainerBlockTemplate> {
           Container(
             alignment: Alignment.center,
             child: Container(
-                height: 145,
-                width: 115,
-                margin: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                  // image: DecorationImage(
-                  //     fit: BoxFit.cover, image: NetworkImage(widget.image))
-                ),
-                child: Image.network(
-                  widget.image,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-
-                    return Center(
-                        child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-                      height: 145,
-                      alignment: Alignment.center,
-                      width: 115,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(7)),
-                    ));
-                  },
-                )),
+              height: 145,
+              width: 115,
+              margin: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  image: DecorationImage(
+                      fit: BoxFit.cover, image: NetworkImage(widget.image))),
+            ),
           ),
-          // const Padding(padding: EdgeInsets.symmetric(horizontal: 1)),
           Expanded(
             child: Container(
               height: 135,
               padding: EdgeInsets.only(right: 10, left: 20),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        // margin: const EdgeInsets.only(top: 10),
-                        child: Row(
-                          children: [
-                            Text(
-                              widget.name,
-                              style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 58, 58, 58),
-                                      fontSize: 19)),
-                            ),
-                            const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 6)),
-                            InkWell(
-                              onTap: () => showDialog(
-                                  context: context,
-                                  builder: (context) => AnimatedAlertBox(
-                                      images: widget.images,
-                                      name: widget.name,
-                                      description: widget.description)),
-                              child: Container(
-                                margin: EdgeInsets.only(right: 5),
-                                width: 17,
-                                height: 17,
-                                padding: EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(7),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 0.5,
-                                    )),
-                                child: Icon(
-                                  Icons.question_mark_rounded,
-                                  size: 9,
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Padding(padding: EdgeInsets.symmetric(vertical: 2)),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          // margin: const EdgeInsets.only(top: 10),
+                          child: Row(
+                            children: [
+                              Container(
+                                  constraints: BoxConstraints(maxWidth: 110),
+                                  // width: 110,
+                                  child: Text(
+                                    shootName,
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                Color.fromARGB(255, 58, 58, 58),
+                                            fontSize: 17)),
+                                    softWrap: true,
+                                  )),
+                              const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 6)),
+                              InkWell(
+                                onTap: () => showDialog(
+                                    context: context,
+                                    builder: (context) => AnimatedAlertBox(
+                                        images: widget.images,
+                                        selected: isAdded,
+                                        name: widget.name,
+                                        handleFunc: handleChange,
+                                        description: widget.description)),
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 5),
+                                  width: 17,
+                                  height: 17,
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(7),
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 0.5,
+                                      )),
+                                  child: Icon(
+                                    Icons.question_mark_rounded,
+                                    size: 9,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        color: Colors.red,
-                        padding: EdgeInsets.only(left: 3),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.currency_rupee_outlined,
-                              size: 20,
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 1),
-                              // height: 30,
-                              alignment: Alignment.center,
-                              child: Text('${widget.price}',
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20))),
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 1),
                         ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    color: Colors.amberAccent,
-                    padding: EdgeInsets.only(left: 6, bottom: 2, top: 0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
                         Container(
-                          child: Icon(
-                            Icons.offline_bolt,
-                            color: Colors.greenAccent,
-                            size: 14,
+                          padding: EdgeInsets.only(left: 3),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.currency_rupee_outlined,
+                                size: 22,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 1),
+                                // height: 30,
+                                alignment: Alignment.centerLeft,
+                                child: Text('${widget.price}',
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 22))),
+                              ),
+                            ],
                           ),
                         ),
                         Container(
-                          child: Text(
-                            ' ${widget.offer}% OFF',
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500)),
+                          padding:
+                              const EdgeInsets.only(left: 6, bottom: 2, top: 2),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.offline_bolt,
+                                color: Colors.greenAccent,
+                                size: 16,
+                              ),
+                              Text(
+                                ' ${widget.offer}% OFF',
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                  // Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: isAdded ? Colors.black : Colors.red,
-                      ),
-                      // padding: const EdgeInsets.only(top: 0, left: 10),
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap:() => handleChange,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 4),
-                          alignment: Alignment.center,
-                          child: Text(
-                            isAdded ? "ADDED" : "ADD",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16)),
-                          ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: isAdded ? Colors.black : Colors.red,
+                    ),
+                    alignment: Alignment.center,
+                    child: InkWell(
+                      onTap: () => handleChange(),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 9),
+                        alignment: Alignment.center,
+                        child: Text(
+                          isAdded ? "ADDED" : "ADD",
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16)),
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

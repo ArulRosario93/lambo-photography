@@ -7,12 +7,19 @@ class PersonalDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 255, 255, 255),
-        borderRadius: BorderRadius.circular(5)
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(33, 0, 0, 0),
+              blurRadius: 10,
+              spreadRadius: 1,
+            )
+          ]
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

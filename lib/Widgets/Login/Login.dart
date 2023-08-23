@@ -102,23 +102,29 @@ class _LoginState extends State<Login> {
                 print("Yo"),
                 setState(() => {slideIn = true})
               });
-    } else if (newValue == "Checking") {
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //   margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      //   content: Text(
-      //     'Verifing',
-      //     style: GoogleFonts.poppins(),  
-      //   ),
-      //   duration: const Duration(milliseconds: 2500), // Width of the SnackBar.
-      //   padding: const EdgeInsets.symmetric(
-      //     horizontal: 18.0, // Inner padding for SnackBar content.
-      //     vertical: 15,
-      //   ),
-      //   behavior: SnackBarBehavior.floating,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(10.0),
-      //   ),
-      // ));
+    } else if (newValue == "COMPLETED") {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+        content: Text(
+          'VERIFIED',
+          style: GoogleFonts.poppins(),
+        ),
+        duration: const Duration(milliseconds: 2500), // Width of the SnackBar.
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18.0, // Inner padding for SnackBar content.
+          vertical: 15,
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ));
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ));
     } else if (newValue == "TimeOut") {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -312,7 +318,8 @@ class _LoginState extends State<Login> {
                           Container(
                             // alignment: Alignment.center,
                             // margin: EdgeInsets.symmetric(vertical: 15, horizontal: 60),
-                            padding: EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 25, horizontal: 16),
                             // color: Colors.redAccent,
                             // child: Row(
                             //   mainAxisAlignment: MainAxisAlignment.center,

@@ -3,14 +3,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AnimatedAlertBox extends StatefulWidget {
-  const AnimatedAlertBox({
-    super.key,
-    required this.images,
-    required this.name,
-    required this.description
-  });
+  const AnimatedAlertBox(
+      {super.key,
+      required this.images,
+      required this.name,
+      required this.handleFunc,
+      required this.selected,
+      required this.description});
 
   final String name;
+  final handleFunc;
+  final bool selected;
   final String description;
   final List images;
 
@@ -22,11 +25,17 @@ class _AnimatedAlertBoxState extends State<AnimatedAlertBox>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
 
+  bool? isAdded;
+
   @override
   void initState() {
     super.initState();
     // Delayed expansion after 1 second
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+
+    setState(() {
+      isAdded = widget.selected;
+    });
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(milliseconds: 1500), () {
         setState(() {
           _isExpanded = true;
@@ -35,13 +44,16 @@ class _AnimatedAlertBoxState extends State<AnimatedAlertBox>
     });
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    void handlechange() {
+      setState(() {
+        isAdded = !isAdded!;
+      });
+
+      widget.handleFunc();                   
+    }
+
     return AlertDialog(
       contentPadding: EdgeInsets.all(0),
       title: Container(
@@ -49,7 +61,7 @@ class _AnimatedAlertBoxState extends State<AnimatedAlertBox>
         child: Text(
           widget.name,
           style: GoogleFonts.poppins(
-            textStyle: TextStyle(fontSize: 19),
+            textStyle: TextStyle(fontSize: 17),
           ),
           textAlign: TextAlign.center,
         ),
@@ -92,18 +104,16 @@ class _AnimatedAlertBoxState extends State<AnimatedAlertBox>
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(3)),
-                      color: Colors.red,
+                      color: isAdded! ? Colors.black : Colors.red,
                     ),
                     child: InkWell(
-                        onTap: () {
-                          print("How you doign");
-                        },
+                        onTap: () => handlechange(),
                         child: Container(
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 9),
                           alignment: Alignment.center,
                           child: Text(
-                            "ADD",
+                            isAdded! ? "ADDED" : "ADD",
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     fontSize: 17,

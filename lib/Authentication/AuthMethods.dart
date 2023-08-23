@@ -80,8 +80,7 @@ class AuthMethods {
         PhoneAuthCredential credential = PhoneAuthProvider.credential(
             verificationId: verificationID, smsCode: smsCode);
 
-        UserCredential user =
-            await FirebaseAuth.instance.signInWithCredential(credential);
+        await FirebaseAuth.instance.signInWithCredential(credential);
 
         // setStatusFunction("SUCCESS");
 

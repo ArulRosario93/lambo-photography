@@ -2,20 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Items extends StatelessWidget {
-  const Items({super.key, required this.shootCatagory, required this.shootName, required this.shootPrice});
+  const Items({super.key, required this.shootCatagory, required this.shootName, required this.shootPrice, required this.image});
 
-  final shootCatagory;
-  final shootName;
-  final shootPrice;
+  final String shootCatagory;
+  final String shootName;
+  final String shootPrice;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          color: Colors.white, borderRadius: BorderRadius.circular(9),
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(68, 0, 0, 0),
+            blurRadius: 10,
+            spreadRadius: 1,
+          )
+        ]    
+      ),
       margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.only(left: 10, right: 20, top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -28,7 +37,7 @@ class Items extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       image: DecorationImage(
-                          image: AssetImage("assets/image.jpg"),
+                          image: NetworkImage(image),
                           fit: BoxFit.cover)),
                 ),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
@@ -36,7 +45,7 @@ class Items extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      shootCatagory.length > 1? Container(
                         child: Text(
                           shootCatagory,
                           style: GoogleFonts.poppins(
@@ -45,7 +54,7 @@ class Items extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black87)),
                         ),
-                      ),
+                      ): const Padding(padding: EdgeInsets.zero,),
                       Container(
                         child: Text(
                           shootName,
@@ -63,13 +72,18 @@ class Items extends StatelessWidget {
             ),
           ),
           Container(
-            child: Text(
-              shootPrice,
-              style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500)),
+            child: Row(
+              children: [
+                Icon(Icons.currency_rupee, size: 19, fill: 1,),
+                Text(
+                  shootPrice,
+                  style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500)),
+                ),
+              ],
             ),
           )
         ],
