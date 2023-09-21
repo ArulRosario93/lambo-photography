@@ -1,13 +1,10 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/Home/LoaderScreen/LoaderScreen.dart';
 import 'package:login_screen/Widgets/Home/Slider/SliderHome.dart';
 import 'package:login_screen/Widgets/Home/SlotContainer/SlotContainer.dart';
 import 'package:login_screen/loaderLine/loaderLines.dart';
-import 'package:http/http.dart' as http;
 import 'package:login_screen/Widgets/Account/Account.dart';
 
 class Home extends StatefulWidget {
@@ -69,11 +66,11 @@ class _HomeState extends State<Home> {
     _onItemTapped(int num) {
       Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => Account(),
-          ));
+        MaterialPageRoute(
+          builder: (context) => Account(),
+        ));
     }
-
+    
     return Number == 0
         ? Scaffold(
             extendBodyBehindAppBar: false,
@@ -98,7 +95,9 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SliderHome(),
+
                         Padding(padding: EdgeInsets.symmetric(vertical: 13)),
+
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 10),
                           child: Row(

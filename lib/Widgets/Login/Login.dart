@@ -318,7 +318,7 @@ class _LoginState extends State<Login> {
                           Container(
                             // alignment: Alignment.center,
                             // margin: EdgeInsets.symmetric(vertical: 15, horizontal: 60),
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 25, horizontal: 16),
                             // color: Colors.redAccent,
                             // child: Row(
@@ -349,7 +349,7 @@ class _LoginState extends State<Login> {
                                                   fontSize: 24)),
                                         ),
                                       ),
-                                Padding(
+                                const Padding(
                                     padding: EdgeInsets.symmetric(vertical: 5)),
                                 otpSent
                                     ? Padding(
@@ -367,14 +367,14 @@ class _LoginState extends State<Login> {
                                                   color: const Color.fromARGB(
                                                       255, 31, 31, 31))),
                                         ),
-                                      ),
+                                      ),    
                               ],
                             ),
                           ),
                           Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: otpSent ? 6 : 18)),
-                          Container(
+                           Container(
                             child: otpSent
                                 ? EnterOTP(
                                     loading: loading,
@@ -409,6 +409,7 @@ class _LoginState extends State<Login> {
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 45),
                                           child: TextFormField(
+                                            autofillHints: [AutofillHints.telephoneNumber],
                                             autofocus: pressed,
                                             onFieldSubmitted: (value) =>
                                                 verifyPhoneNumber(number.text),

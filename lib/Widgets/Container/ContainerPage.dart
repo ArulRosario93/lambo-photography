@@ -304,17 +304,20 @@ class ContainerPage extends StatelessWidget {
                         ));
                   },
                   child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 48),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color.fromARGB(255, 255, 17, 0),
-                    ),
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 16,
+                            spreadRadius: 1,
+                            color: Color.fromARGB(255, 141, 136, 136),
+                          )
+                        ],
+                        color: const Color.fromARGB(255, 255, 17, 0)),
                     child: Text(
                       "Next",
-                      style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              fontSize: 17)),
+                      style: GoogleFonts.poppins(color: Colors.white, fontSize: 17),
                     ),
                   ),
                 ),

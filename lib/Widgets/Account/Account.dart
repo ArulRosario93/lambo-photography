@@ -20,6 +20,7 @@ class Account extends StatelessWidget {
       body: Column(
           children: [
             Container(
+              color: Color.fromARGB(255, 255, 255, 255),
               alignment: Alignment.center,
               // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Column(
@@ -45,7 +46,6 @@ class Account extends StatelessWidget {
                   ),
 
                   Container(
-                    
                     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(7)),
@@ -81,16 +81,6 @@ class Account extends StatelessWidget {
                               child: Text("Phone Number: ", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600),),
                             ), Container(
                               child: Text("9804298149", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w400),),
-                            )
-                          ],
-                        ),
-                        Padding(padding: EdgeInsets.symmetric(vertical: 3),),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text("E-mail: ", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600),),
-                            ), Container(
-                              child: Text("itsarrowhere380@gmail.com", style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w400),),
                             )
                           ],
                         ),

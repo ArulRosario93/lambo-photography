@@ -40,27 +40,18 @@ class FeaturedVariety extends StatelessWidget {
               style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.normal),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 35),
               child: Column(
                 children: [
                   for (var i = 0; i < catagory.length; i++)
                   Column(children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(bottom: 10, left: 28, top: 20),
-                      child: Text(
-                        catagory[i]["CatagoryType"],
-                        style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 17)),
-                      ),
-                    ),
                     Stack(
                       children: [
                         Container(
                             alignment: Alignment.center,
                             height: 150,
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
                                 image: DecorationImage(
                                     image: NetworkImage(catagory[i]["image"]),
                                     fit: BoxFit.cover)),
@@ -70,35 +61,37 @@ class FeaturedVariety extends StatelessWidget {
                           child: Container(
                           alignment: Alignment.center,
                           height: 150,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          // padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                catagory[i]["Offer"],
-                                style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        color: const Color.fromARGB(255, 0, 0, 0),
-                                        fontSize: 18)),
-                              ),
                               Container(
-                                  height: 20,
-                                  width: 20,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Icon(
-                                    Icons.question_mark,
-                                    color: Colors.black,
-                                    size: 12,
-                                  ))
+                                height: 150,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 18),
+                                child: Text(
+                                  catagory[i]["CatagoryType"],
+                                  style: GoogleFonts.cinzel(
+                                      textStyle: TextStyle(
+                                          fontWeight: FontWeight.w500, fontSize: 20, color: Colors.white)),
+                                ),
+                              ),
+                              // Text(
+                              //   catagory[i]["Offer"] + "%",
+                              //   style: GoogleFonts.poppins(
+                              //       textStyle: const TextStyle(
+                              //           color: Colors.white,
+                              //           fontSize: 16,
+                              //           fontWeight: FontWeight.w500)),
+                              // ),
                             ],
                           ),
                         ),)
                         
                       ],
                     ),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 8))
                   ])
                   
                 ],

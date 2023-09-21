@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/Container/ContainerDates/ContainerDates.dart';
-import 'package:login_screen/Widgets/Date&Time/Time/TimeinRow.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:login_screen/Widgets/FeaturedPage/FeaturedPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:login_screen/Widgets/FeaturedPage/FeaturedVariety/FeaturedVariety.dart';
@@ -28,7 +28,30 @@ class _DateAndTimeState extends State<DateAndTime> {
 
   List finalDate = [];
 
+  List? dateSelected;
+
   var snap1;
+
+  String _twoDigits(int n) {
+    if (n >= 10) return "$n";
+    return "0$n";
+  }
+
+  String extractDate(String dateRangeString) {
+    // Remove brackets and split the string by comma
+    // Remove brackets and split the string by space
+    String cleanDate =
+        dateRangeString.substring(0, dateRangeString.indexOf(' '));
+
+    // Parse the cleaned string into a DateTime object
+    DateTime date = DateTime.parse(cleanDate);
+
+    // Format the DateTime object as desired (in yyyy-MM-dd format)
+    String formattedDate =
+        "${date.year}-${_twoDigits(date.month)}-${_twoDigits(date.day)}";
+
+    return formattedDate;
+  }
 
   void handleCalled() async {
     DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
@@ -66,6 +89,34 @@ class _DateAndTimeState extends State<DateAndTime> {
       });
     }
 
+    void onSubmit() {
+      for (var i = 0; i < dateSelected!.length; i++) {
+        // if (dateSelected!.length > 1) {
+        String dateRangeString = dateSelected![i].toString();
+
+        // Extract the date from the range string
+        String extractedDate = extractDate(dateRangeString);
+
+        DateTime date = DateTime.parse(extractedDate);
+
+        // Format the DateTime object as desired (in dd/MM/yyyy format)
+        String reversedFormat =
+            "${_twoDigits(date.day)}/${_twoDigits(date.month)}/${date.year}";
+
+        print("Extracted Date: $reversedFormat");
+
+        handledateSelected(reversedFormat);
+      }
+    }
+
+    void _onDaySelected(
+        DateRangePickerSelectionChangedArgs
+            dateRangePickerSelectionChangedArgs) {
+      setState(() {
+        dateSelected = dateRangePickerSelectionChangedArgs.value;
+      });
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -73,47 +124,42 @@ class _DateAndTimeState extends State<DateAndTime> {
         foregroundColor: Colors.black,
         centerTitle: true,
         title: Text(
-          "Baby Shoot",
+          widget.name,
           style: GoogleFonts.poppins(
               color: const Color.fromARGB(221, 41, 41, 41), fontSize: 18),
         ),
       ),
       body: SingleChildScrollView(
           child: Column(children: [
+        // const Padding(padding: EdgeInsets.symmetric(vertical: 20)),
         const Padding(padding: EdgeInsets.symmetric(vertical: 20)),
         Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+            height: 500,
             alignment: Alignment.center,
-            // color: Colors.red,
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            // height: 500,
-            child: ContainerDates(handledateSelected: handledateSelected)),
-        const Padding(padding: EdgeInsets.symmetric(vertical: 20)),
-        Container(
-            margin: const EdgeInsets.symmetric(horizontal: 36, vertical: 20),
-            alignment: Alignment.center,
-            height: 335,
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: NotificationListener<OverscrollIndicatorNotification>(
-                onNotification: (overscroll) {
-                  // Prevent the default overscroll indicator from showing
-                  overscroll.disallowIndicator();
-                  return true;
-                },
-                child: GridView.count(
-                  crossAxisCount: 4,
-                  children: List.generate(24, (index) {
-                    return TimeInRow(
-                      time: index + 1,
-                      hrs: "hr",
-                      handleChange: handleChangeTime,
-                    );
-                  }),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  child: Text("Pick The Date",
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(fontSize: 24))),
                 ),
-              ),
+                SizedBox(
+                    height: 350,
+                    width: 300,
+                    // color: Colors.redAccent,
+                    child: SfDateRangePicker(
+                      // maxDate: l stDate,
+                      initialDisplayDate: DateTime.now(),
+                      enablePastDates: false,
+                      selectionTextStyle:
+                          GoogleFonts.poppins(textStyle: TextStyle()),
+                      // showActionButtons: true,
+                      view: DateRangePickerView.month,
+                      selectionMode: DateRangePickerSelectionMode.multiple,
+                      onSelectionChanged: _onDaySelected,
+                    )),
+              ],
             )),
       ])),
       bottomSheet: Container(
@@ -127,6 +173,7 @@ class _DateAndTimeState extends State<DateAndTime> {
               print(widget.description);
               print(widget.snap);
               print(widget.name);
+              onSubmit();
               Navigator.push(
                   context,
                   MaterialPageRoute(

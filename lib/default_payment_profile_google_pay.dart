@@ -24,7 +24,7 @@ const String defaultGooglePay = '''{
           }
         }
       }
-    ],
+  ],
     "merchantInfo": {
       "merchantId": "BCR2DN4TR2DKXVJB",
       "merchantName": "Photography"

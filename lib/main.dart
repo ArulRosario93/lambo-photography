@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:login_screen/Widgets/FeaturedPage/FeaturedVariety/FeaturedVariety.dart';
 import 'package:login_screen/Widgets/Home/Home.dart';
+import 'package:login_screen/Widgets/Login/Login.dart';
 import 'package:login_screen/Widgets/Login/LoginController.dart';
 
 void main() async {

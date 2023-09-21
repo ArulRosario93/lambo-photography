@@ -141,11 +141,16 @@ class FeaturedPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          child: Text(
-                            "40,000",
-                            style: GoogleFonts.poppins(
-                                fontSize: 15, fontWeight: FontWeight.w500),
-                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.currency_rupee, size: 19, fill: 1,),
+                              Text(
+                                price,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 15, fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ) 
                         )
                       ],
                     ),
@@ -180,31 +185,6 @@ class FeaturedPage extends StatelessWidget {
                   ],
                 )),
             Padding(padding: EdgeInsets.symmetric(vertical: 2)),
-            Container(
-              child: Text(
-                "Time Selected",
-                style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500)),
-              ),
-            ),
-            Container(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (var i = 0; i < time.length; i++)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: Text(
-                          "${time[i]}",
-                          style: GoogleFonts.poppins(),
-                        ),
-                      ),
-                  ],
-                )),
             Flexible(
               child: Container(),
               flex: 10,
