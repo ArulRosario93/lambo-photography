@@ -24,13 +24,12 @@ class _LocationFieldState extends State<LocationField> {
       child: TextFormField(
         onFieldSubmitted: (value) => widget.handleLocation(controller.text, context),
         style: GoogleFonts.poppins(
-            textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+            textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
         controller: controller,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         decoration: InputDecoration(
-          
-          helperText: "Event Location",
-            contentPadding: const EdgeInsets.all(5),
+          helperText: "Event Location (Detailed Address)",
+            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5))),
       ),
     );

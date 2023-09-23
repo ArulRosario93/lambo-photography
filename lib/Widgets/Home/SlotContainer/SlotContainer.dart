@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/Container/ContainerBlock/ContainerBlock.dart';
-import 'package:login_screen/Widgets/Container/ContainerPage.dart';
 import 'package:login_screen/Widgets/Date&Time/Date&Time.dart';
 
 class SlotContainer extends StatelessWidget {

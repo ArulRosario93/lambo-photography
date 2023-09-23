@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BillingSummary extends StatelessWidget {
-  const BillingSummary({super.key, required this.price});
+  const BillingSummary(
+      {super.key, required this.price});
 
   final String price;
 
@@ -160,17 +161,21 @@ class BillingSummary extends StatelessWidget {
                             ),
                           ],
                         )),
-                      Row(
-                        children: [
-                          Icon(Icons.currency_rupee_sharp, size: 17, weight: 5,),
-                          Text(
-                              "${extraAmount}",
-                              style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      fontSize: 13, fontWeight: FontWeight.w400)),
-                            )
-                        ],
-                      )
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.currency_rupee_sharp,
+                          size: 17,
+                          weight: 5,
+                        ),
+                        Text(
+                          "${extraAmount}",
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  fontSize: 13, fontWeight: FontWeight.w400)),
+                        )
+                      ],
+                    )
                   ],
                 ),
                 Container(
@@ -191,7 +196,11 @@ class BillingSummary extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Icon(Icons.currency_rupee_sharp, size: 17, weight: 5,),
+                        Icon(
+                          Icons.currency_rupee_sharp,
+                          size: 17,
+                          weight: 5,
+                        ),
                         Text(
                           "${grandAmount}",
                           style: GoogleFonts.poppins(

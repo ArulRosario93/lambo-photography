@@ -11,10 +11,12 @@ class FeaturedPage extends StatelessWidget {
       required this.time,
       required this.offer,
       required this.price,
+      this.type,
       required this.image,
       required this.description});
 
   final List date;
+  final type;
   final String name;
   final String description;
   final snap;
@@ -43,6 +45,32 @@ class FeaturedPage extends StatelessWidget {
           children: [
             const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
             Container(
+              child: Text(
+                "Date Selected",
+                style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500)),
+              ),
+            ),
+            Container(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (var i = 0; i < date.length; i++)
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 2),
+                        child: Text(
+                          "${date[i]}",
+                          style: GoogleFonts.poppins(),
+                        ),
+                      ),
+                  ],
+                )),
+            Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+            Container(
               child: InkWell(
                 child: Stack(
                   children: [
@@ -58,8 +86,7 @@ class FeaturedPage extends StatelessWidget {
                                 blurRadius: 14)
                           ],
                           image: DecorationImage(
-                              image: NetworkImage(image),
-                              fit: BoxFit.cover)),
+                              image: NetworkImage(image), fit: BoxFit.cover)),
                     ),
                     Container(
                       margin: const EdgeInsets.all(9),
@@ -83,6 +110,9 @@ class FeaturedPage extends StatelessWidget {
               ),
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
+
+            type != null? Text(type, style: GoogleFonts.poppins(textStyle: type == "Gold" ?TextStyle(color: Color.fromARGB(255, 255, 191, 0), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600): type == "Silver"? TextStyle(color: Color.fromARGB(255, 169, 169, 169), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600): TextStyle(color: Color.fromARGB(255, 129, 138, 116), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600),)): Text(""),
+
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,7 +148,7 @@ class FeaturedPage extends StatelessWidget {
                                   snap["includes"][i],
                                   style: GoogleFonts.poppins(
                                       textStyle: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 15,
                                           fontWeight: FontWeight.w500)),
                                 ),
                               ],
@@ -141,49 +171,27 @@ class FeaturedPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          child: Row(
-                            children: [
-                              Icon(Icons.currency_rupee, size: 19, fill: 1,),
-                              Text(
-                                price,
-                                style: GoogleFonts.poppins(
-                                    fontSize: 15, fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ) 
-                        )
+                            child: Row(
+                          children: [
+                            Icon(
+                              Icons.currency_rupee,
+                              size: 19,
+                              fill: 1,
+                            ),
+                            Text(
+                              price,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ))
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-            Container(
-              child: Text(
-                "Date Selected",
-                style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500)),
-              ),
-            ),
-            Container(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (var i = 0; i < date.length; i++)
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 2),
-                        child: Text(
-                          "${date[i]}",
-                          style: GoogleFonts.poppins(),
-                        ),
-                      ),
-                  ],
-                )),
+            // Padding(padding: EdgeInsets.symmetric(vertical: 10)),
             Padding(padding: EdgeInsets.symmetric(vertical: 2)),
             Flexible(
               child: Container(),
@@ -203,6 +211,8 @@ class FeaturedPage extends StatelessWidget {
                   builder: (context) => BillingScreen(
                     name: name,
                     date: date,
+                    price: price,
+                    type: type,
                     time: time,
                     snap: snap,
                     image: image,

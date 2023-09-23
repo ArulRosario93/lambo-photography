@@ -40,26 +40,26 @@ class DateTimeSelection extends StatelessWidget {
 
                 Padding(padding: EdgeInsets.symmetric(vertical: 3)),
 
-                Container(
-                  child: Row(
-                    children: [
-                      Text(time.length > 1?"Time Slots: ": "Time Slot", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 15, fontWeight:FontWeight.w600)),),
+                // Container(
+                //   child: Row(
+                //     children: [
+                //       Text(time.length > 1?"Time Slots: ": "Time Slot", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 15, fontWeight:FontWeight.w600)),),
 
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                //       Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
 
-                      Row(
-                        children: [
-                          for(var i = 0; i < time.length; i++)
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2),
-                              child: Text(time[i], style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 15, fontWeight:FontWeight.w400)),),
-                            )
-                        ],
-                      ),  
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
-                    ],
-                  ),
-                ),
+                //       Row(
+                //         children: [
+                //           for(var i = 0; i < time.length; i++)
+                //             Container(
+                //               padding: EdgeInsets.symmetric(horizontal: 2),
+                //               child: Text(time[i], style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 15, fontWeight:FontWeight.w400)),),
+                //             )
+                //         ],
+                //       ),  
+                //       Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
+                //     ],
+                //   ),
+                // ),
         ],
       ),
     );

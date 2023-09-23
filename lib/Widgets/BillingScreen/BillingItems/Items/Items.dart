@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class Items extends StatelessWidget {
   const Items({super.key, required this.shootCatagory, required this.shootName, required this.shootPrice, required this.image});
 
-  final String shootCatagory;
+  final shootCatagory;
   final String shootName;
   final String shootPrice;
   final String image;
@@ -45,14 +45,23 @@ class Items extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      shootCatagory.length > 1? Container(
+                      shootCatagory != null? Container(
                         child: Text(
                           shootCatagory,
                           style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
+                              textStyle: shootCatagory == "Gold"? TextStyle(
                                   fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black87)),
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 255, 191, 0)): shootCatagory == "Silver"? TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 169, 169, 169)): TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 129, 138, 116))),
                         ),
                       ): const Padding(padding: EdgeInsets.zero,),
                       Container(

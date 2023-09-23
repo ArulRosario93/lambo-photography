@@ -223,12 +223,12 @@ class ContainerPage extends StatelessWidget {
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BillingScreen(name: name, snap: snap, date: date, time: time, description: description, image: snap["image"],),
-                                            ));
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) =>
+                                        //           BillingScreen(name: name  , snap: snap, date: date, time: time, description: description, image: snap["image"],),
+                                        //     ));
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -297,11 +297,11 @@ class ContainerPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BillingScreen(name: name, snap: snap, date: date, time: time, description: description, image: snap["image"],),
-                        ));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => BillingScreen(name: name, snap: snap, date: date, time: time, description: description, image: snap["image"],),
+                    //     ));
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 48),

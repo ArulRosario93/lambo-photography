@@ -23,7 +23,7 @@ class FeaturedVariety extends StatelessWidget {
         foregroundColor: Colors.black,
         centerTitle: true,
         title: Text(
-          "Shoot",
+          "Select Types",
           style: GoogleFonts.poppins(
               color: const Color.fromARGB(221, 41, 41, 41), fontSize: 18),
         ),
@@ -35,10 +35,10 @@ class FeaturedVariety extends StatelessWidget {
               child: Container(),
               flex: 1,
             ),
-            Text(
-              "Select Types",
-              style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.normal),
-            ),
+            // Text(
+            //   "Select Types",
+            //   style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.normal),
+            // ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 35),
               child: Column(
@@ -57,7 +57,7 @@ class FeaturedVariety extends StatelessWidget {
                                     fit: BoxFit.cover)),
                         ),
                         InkWell(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FeaturedPage(name: name, snap: snap1, image: catagory[i]["image"], date: date, time: time, description: description, offer: catagory[i]["Offer"], price: catagory[i]["Price"],),)),
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FeaturedPage(type: catagory[i]["CatagoryType"], name: name, snap: snap1, image: catagory[i]["image"], date: date, time: time, description: description, offer: catagory[i]["Offer"], price: catagory[i]["Price"],),)),
                           child: Container(
                           alignment: Alignment.center,
                           height: 150,
@@ -99,7 +99,7 @@ class FeaturedVariety extends StatelessWidget {
             ),
             Flexible(
               child: Container(),
-              flex: 10,
+              flex: 2,
             ),
           ],
         ),

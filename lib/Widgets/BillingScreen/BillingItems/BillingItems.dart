@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/BillingScreen/BillingItems/Items/Items.dart';
 
 class BillingItems extends StatelessWidget {
-  const BillingItems({super.key, required this.snap, required this.image});
+  const BillingItems({super.key, required this.type, required this.snap, required this.price, required this.image});
 
-  final snap, image;
+  final snap, image, price, type;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class BillingItems extends StatelessWidget {
                     TextStyle(fontWeight: FontWeight.w600, fontSize: 17)),
           ),
           Items(
-            shootCatagory: "",
+            shootCatagory: type,
             shootName: snap["name"],
-            shootPrice: snap["price"],
+            shootPrice: price,
             image: image
           ),
         ],
