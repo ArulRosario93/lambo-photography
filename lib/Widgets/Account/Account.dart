@@ -51,7 +51,7 @@ class Account extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                  alignment: Alignment.center,
+                  alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Color.fromARGB(26, 104, 104, 104)
@@ -61,8 +61,8 @@ class Account extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Terms & Conditions", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black87)),),
-                          Divider(color: Colors.white,),
+                          Text("Terms & Conditions", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Color.fromARGB(255, 0, 42, 115))),),
+                          // Divider(color: Colors.white,),
                           Text("Last Updated On Sep 2023", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.normal, color: Colors.black45)),)
                         ],
                       ),
