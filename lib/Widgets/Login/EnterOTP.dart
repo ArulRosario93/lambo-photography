@@ -37,7 +37,7 @@ class _MyWidgetState extends State<EnterOTP> {
               child: Column(
                 children: [
                   Text(
-                    "OTP sent to Email Address",
+                    "OTP sent to Phone Number",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                         textStyle:

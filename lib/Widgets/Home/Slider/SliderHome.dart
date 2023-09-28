@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SliderHome extends StatelessWidget {
   const SliderHome({super.key});
@@ -19,37 +20,112 @@ class SliderHome extends StatelessWidget {
               items: [
                 Container(
                   height: 80,
-                  margin: EdgeInsets.only(right: 18),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.amberAccent,
-                      image: const DecorationImage(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    alignment: AlignmentDirectional.centerStart,
+                    children: [
+                      Shimmer.fromColors(baseColor:Color.fromARGB(255, 241, 241, 241), highlightColor: Color.fromARGB(255, 255, 248, 248), child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 250,
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              height:100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20)
+                              ),
+                            ),
+                          ],
+                        ),),
+                      Container(
+                        height: 80,
+                        margin: const EdgeInsets.only(right: 18),
+                        decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                              "https://img.freepik.com/free-photo/happy-family-outdoors-spending-time-together_1328-2486.jpg"))),
+                            "https://img.freepik.com/free-photo/happy-family-outdoors-spending-time-together_1328-2486.jpg"
+                          )
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              Container(
-                height: 80,
-                margin: EdgeInsets.only(right: 18, left: 9),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.amberAccent,
-                    image: const DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://e1.pxfuel.com/desktop-wallpaper/417/521/desktop-wallpaper-babies-posted-by-zoey-cunningham-baby-girl.jpg"))),
-              ),
-              Container(
-                height: 80,
-                margin: EdgeInsets.only(left: 9),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.amberAccent,
-                    image: const DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://photographypro.com/wp-content/uploads/2020/06/Children-Photography-56.jpg"))),
-              ),
+                Container(
+                  height: 80,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    alignment: AlignmentDirectional.centerStart,
+                    children: [
+                      Shimmer.fromColors(baseColor:Color.fromARGB(255, 241, 241, 241), highlightColor: Color.fromARGB(255, 255, 248, 248), child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 250,
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              height:100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20)
+                              ),
+                            ),
+                          ],
+                        ),),
+                      Container(
+                        height: 80,
+                        margin: const EdgeInsets.only(right: 18),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              "https://e1.pxfuel.com/desktop-wallpaper/417/521/desktop-wallpaper-babies-posted-by-zoey-cunningham-baby-girl.jpg"
+                            )
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 80,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    alignment: AlignmentDirectional.centerStart,
+                    children: [
+                      Shimmer.fromColors(baseColor:Color.fromARGB(255, 241, 241, 241), highlightColor: Color.fromARGB(255, 255, 248, 248), child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 250,
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              height:100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20)
+                              ),
+                            ),
+                          ],
+                        ),),
+                      Container(
+                        height: 80,
+                        margin: const EdgeInsets.only(right: 18),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              "https://photographypro.com/wp-content/uploads/2020/06/Children-Photography-56.jpg"
+                            )
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             ],
             options: CarouselOptions(
               height: 120.0,

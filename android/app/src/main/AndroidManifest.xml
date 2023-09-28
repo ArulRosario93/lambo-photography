@@ -1,10 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.login_screen">
     <queries>
-        <package android:name="com.google.android.apps.nbu.paisa.user" />
+        <intent>
+        <action android:name="android.intent.action.SENDTO" />
+        <data android:scheme="mailto" />
+        </intent>
     </queries>
     <application
-        android:label="login_screen"
+        android:label="V Studio"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
@@ -23,10 +26,6 @@
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
-            />
-            <meta-data
-                android:name="com.google.android.gms.wallet.api.enabled"
-                android:value="true" 
             />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

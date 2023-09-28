@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class BillingSummary extends StatelessWidget {
   const BillingSummary(
       {super.key, required this.price});
@@ -9,15 +10,13 @@ class BillingSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double percentVal = 2.9 / 100;
-
     String val = price;
 
     int amount = int.parse(val);
 
-    double extraAmount = percentVal * amount;
+    double gst = amount * 18 / 100;
 
-    double grandAmount = amount + 90.0 + extraAmount;
+    double grandAmount = amount + gst;
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -126,12 +125,8 @@ class BillingSummary extends StatelessWidget {
                         )),
                     Row(
                       children: [
-                        Icon(
-                          Icons.currency_rupee_sharp,
-                          size: 17,
-                        ),
                         Text(
-                          "90",
+                          "18%",
                           style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.w400)),
@@ -141,43 +136,6 @@ class BillingSummary extends StatelessWidget {
                   ],
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 2)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                        ),
-                        child: Row(
-                          children: [
-                            // Icon(Icons.home_max, size: 18,),
-                            // Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
-                            Text(
-                              "Extra",
-                              style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400)),
-                            ),
-                          ],
-                        )),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.currency_rupee_sharp,
-                          size: 17,
-                          weight: 5,
-                        ),
-                        Text(
-                          "${extraAmount}",
-                          style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.w400)),
-                        )
-                      ],
-                    )
-                  ],
-                ),
                 Container(
                   alignment: Alignment.center,
                   child: Divider(

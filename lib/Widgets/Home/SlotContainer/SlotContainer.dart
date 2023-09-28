@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/Container/ContainerBlock/ContainerBlock.dart';
 import 'package:login_screen/Widgets/Date&Time/Date&Time.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SlotContainer extends StatelessWidget {
   const SlotContainer(
@@ -47,7 +48,6 @@ class SlotContainer extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              // margin: EdgeInsets.symmetric(vertical: 7),
               child: Container(
                 child: Column(
                   children: [
@@ -55,6 +55,27 @@ class SlotContainer extends StatelessWidget {
                       height: 280,
                       child: Stack(
                         children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
+                            ),
+                            alignment: Alignment.center,
+                            child: Shimmer.fromColors(child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                width: 330,
+                                // margin: EdgeInsets.symmetric(horizontal: 20),
+                                height:280,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+                                ),
+                              ),
+                            ],
+                          ), baseColor:Color.fromARGB(255, 255, 255, 255), highlightColor: Color.fromARGB(255, 238, 238, 238)),
+                          ),
                           Container(
                             height: 280,
                             decoration: BoxDecoration(

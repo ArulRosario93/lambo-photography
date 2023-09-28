@@ -16,7 +16,7 @@ class BillingItems extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Items",
+            "Item",
             textAlign: TextAlign.left,
             style: GoogleFonts.poppins(
                 textStyle:

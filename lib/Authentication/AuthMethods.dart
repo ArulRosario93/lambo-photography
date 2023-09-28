@@ -74,8 +74,6 @@ class AuthMethods {
       required final Function(String) setStatusFunction}) async {
     setStatusFunction("Checking");
     try {
-      print("passed");
-      print(verificationID);
       if (verificationID != null) {
         PhoneAuthCredential credential = PhoneAuthProvider.credential(
             verificationId: verificationID, smsCode: smsCode);
@@ -99,8 +97,6 @@ class AuthMethods {
         });
       }
     } catch (e) {
-      print(smsCode);
-      print(e.toString());
       setStatusFunction(e.toString());
     }
   }

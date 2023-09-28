@@ -24,8 +24,6 @@ class DateAndTime extends StatefulWidget {
 
 class _DateAndTimeState extends State<DateAndTime> {
   List<String> selectedDate = [];
-  List<String> selectedTime = [];
-
   List finalDate = [];
 
   List? dateSelected;
@@ -67,7 +65,10 @@ class _DateAndTimeState extends State<DateAndTime> {
 
   @override
   void initState() {
-    handleCalled();
+    setState(() {
+      finalDate.replaceRange(0, finalDate.length, []);
+    });
+    widget.snap["FeaturedAvailable"] ? handleCalled() : null;
     super.initState();
   }
 
@@ -76,16 +77,6 @@ class _DateAndTimeState extends State<DateAndTime> {
     void handledateSelected(String reversedFormat) {
       setState(() {
         finalDate.add(reversedFormat);
-      });
-    }
-
-    void handleChangeTime(String time) {
-      setState(() {
-        if (selectedTime.contains(time)) {
-          selectedTime.remove(time);
-        } else {
-          selectedTime.add(time);
-        }
       });
     }
 
@@ -122,6 +113,7 @@ class _DateAndTimeState extends State<DateAndTime> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 244, 244, 244),
         foregroundColor: Colors.black,
+        elevation: 0.6,
         centerTitle: true,
         title: Text(
           widget.name,
@@ -168,11 +160,6 @@ class _DateAndTimeState extends State<DateAndTime> {
           alignment: Alignment.bottomRight,
           child: InkWell(
             onTap: () {
-              print(finalDate);
-              print(selectedTime);
-              print(widget.description);
-              print(widget.snap);
-              print(widget.name);
               onSubmit();
               Navigator.push(
                   context,
@@ -183,13 +170,12 @@ class _DateAndTimeState extends State<DateAndTime> {
                               snap1: widget.snap,
                               date: finalDate,
                               description: widget.description,
-                              name: widget.name,
-                              time: selectedTime)
+                              name: widget.name)
                           : FeaturedPage(
                               image: widget.snap["image"],
                               name: widget.name,
                               snap: widget.snap,
-                              time: selectedTime,
+                              includes: widget.snap["includes"],
                               date: finalDate,
                               description: widget.description,
                               price: widget.snap["price"],

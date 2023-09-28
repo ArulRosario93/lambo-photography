@@ -1,18 +1,15 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:login_screen/Widgets/FeaturedPage/FeaturedVariety/FeaturedVariety.dart';
+import 'package:login_screen/Admin/AdminLogin/AdminLogin.dart';
+import 'package:login_screen/Admin/AdminOrders/AdminOrders.dart';
 import 'package:login_screen/Widgets/Home/Home.dart';
-import 'package:login_screen/Widgets/Login/Login.dart';
 import 'package:login_screen/Widgets/Login/LoginController.dart';
+import 'dart:convert' show json;
+import 'package:flutter/services.dart' show rootBundle;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey =
-      "pk_live_51J3aNiSJ3cIYDVdDMDMWqj7eGzi09UzisBOUMMMLbGrKzQTK1oxDREKbp5grFC0SASdT1oTLrdHv6MZ16KXrTp9800l1qiN29x";
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
@@ -34,7 +31,6 @@ class _MyAppState extends State<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
       title: 'Lambo Photography',
-      initialRoute: "/",
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {

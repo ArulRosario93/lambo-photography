@@ -22,7 +22,7 @@ class _LoginControllerState extends State<LoginController> {
               decoration: BoxDecoration(
                   color: Colors.white,
                   image: DecorationImage(
-                      image: AssetImage("assets/image.jpg"),
+                      image: AssetImage("assets/image1.jpg"),
                       fit: BoxFit.cover)),
             ),
             flex: 1,
@@ -35,18 +35,18 @@ class _LoginControllerState extends State<LoginController> {
               ),
               Container(
                 child: Text(
-                  "LAMBO",
+                  "V Studio",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cinzel(
                       textStyle: TextStyle(
                           color: Colors.white,
-                          fontSize: 35,
+                          fontSize: 40,
                           fontWeight: FontWeight.normal)),
                 ),
               ),
               Container(
                 child: Text(
-                  "Photography",
+                  "Private Limited Company",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cinzel(
                       textStyle: TextStyle(
@@ -66,10 +66,6 @@ class _LoginControllerState extends State<LoginController> {
                     // height: 100,
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 35),
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/image.jpg")
-                      ),
                         // color: Colors.red,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(300),

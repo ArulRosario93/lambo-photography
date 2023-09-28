@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/BillingScreen/BillingScreen.dart';
 import 'package:login_screen/Widgets/FeaturedPage/FeaturedPage.dart';
+import 'package:shimmer/shimmer.dart';
 
 class FeaturedVariety extends StatelessWidget {
-  const FeaturedVariety({super.key, required this.snap, required this.snap1, required this.date, required this.description, required this.name, required this.time});
+  const FeaturedVariety({super.key, required this.snap, required this.snap1, required this.date, required this.description, required this.name});
 
   final snap;
   final snap1;
@@ -12,7 +13,6 @@ class FeaturedVariety extends StatelessWidget {
   final List date;
   final String name;
   final String description;
-  final time;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class FeaturedVariety extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 244, 244, 244),
         foregroundColor: Colors.black,
         centerTitle: true,
+        elevation: 0.6,
         title: Text(
           "Select Types",
           style: GoogleFonts.poppins(
@@ -44,9 +45,28 @@ class FeaturedVariety extends StatelessWidget {
               child: Column(
                 children: [
                   for (var i = 0; i < catagory.length; i++)
-                  Column(children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
                     Stack(
                       children: [
+                        Container(
+                          child: Shimmer.fromColors(child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(maxWidth: 350, minWidth: 300),
+                                // margin: EdgeInsets.symmetric(horizontal: 20),
+                                height:150,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5)
+                                ),
+                              ),
+                            ],
+                          ), baseColor:Color.fromARGB(255, 241, 241, 241), highlightColor: Color.fromARGB(255, 255, 248, 248)),
+                        ),
                         Container(
                             alignment: Alignment.center,
                             height: 150,
@@ -57,7 +77,7 @@ class FeaturedVariety extends StatelessWidget {
                                     fit: BoxFit.cover)),
                         ),
                         InkWell(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FeaturedPage(type: catagory[i]["CatagoryType"], name: name, snap: snap1, image: catagory[i]["image"], date: date, time: time, description: description, offer: catagory[i]["Offer"], price: catagory[i]["Price"],),)),
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FeaturedPage(type: catagory[i]["CatagoryType"], includes: catagory[i]["includes"], name: name, snap: snap, image: catagory[i]["image"], date: date, description: description, offer: catagory[i]["Offer"], price: catagory[i]["Price"],),)),
                           child: Container(
                           alignment: Alignment.center,
                           height: 150,
@@ -77,18 +97,9 @@ class FeaturedVariety extends StatelessWidget {
                                           fontWeight: FontWeight.w500, fontSize: 20, color: Colors.white)),
                                 ),
                               ),
-                              // Text(
-                              //   catagory[i]["Offer"] + "%",
-                              //   style: GoogleFonts.poppins(
-                              //       textStyle: const TextStyle(
-                              //           color: Colors.white,
-                              //           fontSize: 16,
-                              //           fontWeight: FontWeight.w500)),
-                              // ),
                             ],
                           ),
-                        ),)
-                        
+                        ),),
                       ],
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 8))
@@ -104,40 +115,6 @@ class FeaturedVariety extends StatelessWidget {
           ],
         ),
       ),
-      // bottomSheet: Container(
-      //   height: 80,
-      //   margin: EdgeInsets.symmetric(horizontal: 16),
-      //   alignment: Alignment.centerRight,
-      //   child: InkWell(
-      //       onTap: () => Navigator.push(
-      //           context,
-      //           MaterialPageRoute(
-      //             builder: (context) => BillingScreen(
-      //               name: name,
-      //               date: date,
-      //               time: time,
-      //               snap: snap,
-      //               description: description,
-      //             ),
-      //           )),
-      //       child: Container(
-      //         padding: EdgeInsets.symmetric(vertical: 18, horizontal: 48),
-      //         decoration: BoxDecoration(
-      //             borderRadius: BorderRadius.circular(5),
-      //             boxShadow: [
-      //               BoxShadow(
-      //                 blurRadius: 16,
-      //                 spreadRadius: 1,
-      //                 color: Color.fromARGB(255, 141, 136, 136),
-      //               )
-      //             ],
-      //             color: const Color.fromARGB(255, 255, 17, 0)),
-      //         child: Text(
-      //           "Next",
-      //           style: GoogleFonts.poppins(color: Colors.white, fontSize: 17),
-      //         ),
-      //       )),
-      // ),
     );
   }
 }

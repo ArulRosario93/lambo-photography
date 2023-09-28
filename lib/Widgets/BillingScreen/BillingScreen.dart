@@ -1,15 +1,18 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Widgets/BillingScreen/BillingItems/BillingItems.dart';
 import 'package:login_screen/Widgets/BillingScreen/BillingSummary/BillingSummary.dart';
-import 'package:login_screen/Widgets/BillingScreen/CancellationPolicy/CancellationPolicy.dart';
 import 'package:login_screen/Widgets/BillingScreen/DateTimeSelection/DateTimeSelection.dart';
-import 'package:login_screen/Widgets/BillingScreen/PersonalDetails/PersonalDetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_screen/Widgets/LocationPage/LocationPage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:login_screen/Widgets/Account/AccountPoints.dart';
+import 'package:login_screen/Widgets/TermsNConditions/TermsNConditions.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class BillingScreen extends StatefulWidget {
   const BillingScreen(
@@ -17,7 +20,6 @@ class BillingScreen extends StatefulWidget {
       required this.name,
       required this.snap,
       required this.date,
-      required this.time,
       required this.image,
       this.type,
       required this.price,
@@ -29,7 +31,6 @@ class BillingScreen extends StatefulWidget {
   final snap;
   final type;
   final image;
-  final time;
   final price;
 
   @override
@@ -40,14 +41,13 @@ class _BillingScreenState extends State<BillingScreen> {
   bool locationSubmit = false;
   String Location = "";
   Razorpay razorpay = Razorpay();
-
+  
+  var paymentID = "";
+  var orderID = "";
   var dropdownValue = "Offline";
 
-  var orderID = "";
-
+  var points = AccountPoints;
   bool amountPayed = false;
-
-  double total = 00;
 
   void handleLocation(String location, context) {
     setState(() {
@@ -57,24 +57,14 @@ class _BillingScreenState extends State<BillingScreen> {
     Navigator.pop(context);
   }
 
-  void handlegrandTotla(double price) {
-    double percentVal = 2.9 / 100;
-
-    String val = widget.price;
-
-    int amount = int.parse(val);
-
-    double extraAmount = percentVal * amount;
-
-    double grandAmount = amount + 90.0 + extraAmount;
-    setState(() {
-      total = grandAmount;
-    });
+  handleLoad() async{
+      await dotenv.load();
   }
 
   @override
-  void iniState() {
+  void initState() {
     super.initState();
+    handleLoad();
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
@@ -89,8 +79,8 @@ class _BillingScreenState extends State<BillingScreen> {
   @override
   Widget build(BuildContext context) {
     void createRazorpayOrder() async {
-      final String apiKey = 'rzp_test_PycJvHLfpkg4vY';
-      final String apiSecret = '1xsRaoiXwoHaoaDxmwBxfAw2';
+      final String? apiKey = dotenv.env['API_KEY'];
+      final String? apiSecret = dotenv.env['API_SECRET'];;
 
       final String basicAuth =
           'Basic ' + base64Encode(utf8.encode('$apiKey:$apiSecret'));
@@ -98,7 +88,7 @@ class _BillingScreenState extends State<BillingScreen> {
       final String apiUrl = 'https://api.razorpay.com/v1/orders';
 
       final Map<String, dynamic> requestData = {
-        "amount": 15.00,
+        "amount": 400000.00,
         "currency": "INR",
         "receipt": "rcptid_11"
       };
@@ -121,13 +111,13 @@ class _BillingScreenState extends State<BillingScreen> {
           orderID = responseData['id'];
         });
         var options = {
-          'key': 'rzp_test_PycJvHLfpkg4vY',
-          'amount': 15.00,
+          'key': dotenv.env['API_KEY'],
+          'amount': 400000,
           'name': 'V Studio',
           'order_id': responseData['id'], // Generate order_id using Orders API
           'description': 'Shoot Bookins',
-          'timeout': 60,
-          'prefill': {'contact': '9043870363', 'email': 'test@razorpay.com'},
+          'timeout': 120,
+          'prefill': {'contact': FirebaseAuth.instance.currentUser!.phoneNumber, 'email': 'test@razorpay.com'},
         };
 
         try {
@@ -142,7 +132,32 @@ class _BillingScreenState extends State<BillingScreen> {
       }
     }
 
-    handleChangedropFunction() {}
+    final Email send_email = Email(
+      body: 'body of email',
+      subject: 'subject of email',
+      recipients: ['itsarrowhere380@gmail.com'],
+      // cc: ['example_cc@ex.com'],
+      // bcc: ['example_bcc@ex.com'],
+      // attachmentPaths: ['/path/to/email_attachment.zip'],
+      isHTML: false,
+    );
+
+    handleMail() async {
+      var data = {
+        "Date": widget.date,
+        "PhoneNumber": FirebaseAuth.instance.currentUser!.phoneNumber,
+        "Payment": "Online 4000",
+        "PaymentID": paymentID,
+        "OrderID": orderID,
+        "Shoot": widget.name,
+        "type": widget.type,
+        "location": Location,
+      };
+
+      await FirebaseFirestore.instance.collection("orders").doc().set(
+        data,
+      );
+    }
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -161,7 +176,7 @@ class _BillingScreenState extends State<BillingScreen> {
         child: Expanded(
             child: Column(
           children: [
-            DateTimeSelection(date: widget.date, time: widget.time),
+            DateTimeSelection(date: widget.date),
             BillingItems(
               snap: widget.snap,
               image: widget.image,
@@ -169,8 +184,213 @@ class _BillingScreenState extends State<BillingScreen> {
               type: widget.type,
             ),
             BillingSummary(price: widget.price),
-            const PersonalDetails(),
-            const CancellationPolicy(),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12, blurRadius: 10, spreadRadius: 1)
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsNConditions(
+                            snap: points["termsandconditions"]),
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Terms & Conditions",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color.fromARGB(255, 0, 42, 115))),
+                          ),
+                          // Divider(color: Colors.white,),
+                          Text(
+                            "Last Updated On Sep 2023",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black45)),
+                          )
+                        ],
+                      ),
+                      Icon(
+                        Icons.arrow_right_sharp,
+                        color: Color.fromARGB(255, 0, 42, 115),
+                      )
+                    ],
+                  ),
+                )),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12, blurRadius: 10, spreadRadius: 1)
+                  ],
+                ),
+                child: InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TermsNConditions(
+                            snap: points["refundpolicy"],
+                          ),
+                        )),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Refund Policy",
+                              style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color.fromARGB(255, 0, 42, 115))),
+                            ),
+                            // Divider(color: Colors.white,),
+                            Text(
+                              "Last Updated On Sep 2023",
+                              style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black45)),
+                            )
+                          ],
+                        ),
+                        Icon(
+                          Icons.arrow_right_sharp,
+                          color: Color.fromARGB(255, 0, 42, 115),
+                        )
+                      ],
+                    ))),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12, blurRadius: 10, spreadRadius: 1)
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsNConditions(
+                          snap: points["privacypolicy"],
+                        ),
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Privacy Policy",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color.fromARGB(255, 0, 42, 115))),
+                          ),
+                          // Divider(color: Colors.white,),
+                          Text(
+                            "Last Updated On Sep 2023",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black45)),
+                          )
+                        ],
+                      ),
+                      Icon(
+                        Icons.arrow_right_sharp,
+                        color: Color.fromARGB(255, 0, 42, 115),
+                      )
+                    ],
+                  ),
+                )),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12, blurRadius: 10, spreadRadius: 1)
+                  ],
+                  // border: Border.all(color: Colors.black45,)
+                ),
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsNConditions(
+                          snap: points["contactus"],
+                        ),
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Contact Us",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color.fromARGB(255, 0, 42, 115))),
+                          ),
+                          // Divider(color: Colors.white,),
+                          Text(
+                            "Last Updated On Sep 2023",
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black45)),
+                          )
+                        ],
+                      ),
+                      Icon(
+                        Icons.arrow_right_sharp,
+                        color: Color.fromARGB(255, 0, 42, 115),
+                      )
+                    ],
+                  ),
+                )),
             const Padding(padding: EdgeInsets.only(bottom: 90))
           ],
         )),
@@ -223,35 +443,35 @@ class _BillingScreenState extends State<BillingScreen> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: DropdownButton(
-                    value: dropdownValue,
-                    onChanged: (value) => setState(() {
-                      dropdownValue = value!;
-                    }),
-                    items: [
-                      DropdownMenuItem(
-                          value: "Online",
-                          child: amountPayed
-                              ? Text(
-                                  "Payed",
-                                  style: GoogleFonts.poppins(),
-                                )
-                              : InkWell(
-                                  onTap: () => createRazorpayOrder(),
-                                  child: Text(
-                                    "Pay Now",
-                                    style: GoogleFonts.poppins(
-                                        color: Colors.black),
-                                  ))),
-                      DropdownMenuItem(
-                        value: "Offline",
-                        child: Text(
-                          "Offline",
+                  child: amountPayed
+                      ? Text(
+                          "Payed",
                           style: GoogleFonts.poppins(),
+                        )
+                      : DropdownButton(
+                          value: dropdownValue,
+                          onChanged: (value) => setState(() {
+                            dropdownValue = value!;
+                          }),
+                          items: [
+                            DropdownMenuItem(
+                                value: "Online",
+                                child: InkWell(
+                                    onTap: () => createRazorpayOrder(),
+                                    child: Text(
+                                      "Pay Advance",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.black),
+                                    ))),
+                            DropdownMenuItem(
+                              value: "Offline",
+                              child: Text(
+                                "Offline",
+                                style: GoogleFonts.poppins(),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -273,7 +493,9 @@ class _BillingScreenState extends State<BillingScreen> {
                       alignment: Alignment.center,
                       child: locationSubmit
                           ? InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                handleMail();
+                              },
                               child: Text(
                                 "Book Slot",
                                 style: GoogleFonts.poppins(
@@ -317,12 +539,11 @@ class _BillingScreenState extends State<BillingScreen> {
     * */
 
     print("Called handlePaymentErrorResponse");
-
-    showAlertDialog(context, "Payment Failed",
-        "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
+    print("Called handlePaymentErrorResponse");
+    print("Called handlePaymentErrorResponse");
   }
 
-  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) async {
     /*
     * Payment Success Response contains three values:
     * 1. Order ID
@@ -331,18 +552,23 @@ class _BillingScreenState extends State<BillingScreen> {
     * */
 
     setState(() {
+      paymentID = response.paymentId!;
+      orderID = response.orderId!;
+    });
+
+    // response.paymentId
+
+    setState(() {
       amountPayed = true;
     });
 
-    showAlertDialog(
-        context, "Payment Successful", "Payment ID: ${response.paymentId}");
-
+    print("Called handlePaymentSuccessResponse");
+    print("Called handlePaymentSuccessResponse");
     print("Called handlePaymentSuccessResponse");
   }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
-    showAlertDialog(
-        context, "External Wallet Selected", "${response.walletName}");
+    //Do Nothing For Now
   }
 
   void showAlertDialog(BuildContext context, String title, String message) {

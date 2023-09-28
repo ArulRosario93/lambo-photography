@@ -8,10 +8,10 @@ class FeaturedPage extends StatelessWidget {
       required this.name,
       required this.snap,
       required this.date,
-      required this.time,
       required this.offer,
       required this.price,
       this.type,
+      this.includes,
       required this.image,
       required this.description});
 
@@ -21,8 +21,8 @@ class FeaturedPage extends StatelessWidget {
   final String description;
   final snap;
   final offer;
+  final includes;
   final price;
-  final time;
   final String image;
 
   @override
@@ -32,6 +32,7 @@ class FeaturedPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         foregroundColor: Colors.black54,
+        elevation: 0.6,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Text(
           name,
@@ -69,8 +70,20 @@ class FeaturedPage extends StatelessWidget {
                       ),
                   ],
                 )),
-            Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+            Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                        
+            type != null? Text(type, style: GoogleFonts.poppins(textStyle: type == "Gold" ?TextStyle(color: Color.fromARGB(255, 255, 191, 0), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600): type == "Silver"? TextStyle(color: Color.fromARGB(255, 169, 169, 169), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600): TextStyle(color: Color.fromARGB(255, 129, 138, 116), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600),)): Text(""),
+
+            Padding(padding: EdgeInsets.symmetric(vertical: 10)),
             Container(
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                      color: Color.fromARGB(73, 0, 0, 0),
+                      spreadRadius: 1,
+                      blurRadius: 14)
+                ],
+              ),
               child: InkWell(
                 child: Stack(
                   children: [
@@ -79,12 +92,6 @@ class FeaturedPage extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Color.fromARGB(73, 0, 0, 0),
-                                spreadRadius: 1,
-                                blurRadius: 14)
-                          ],
                           image: DecorationImage(
                               image: NetworkImage(image), fit: BoxFit.cover)),
                     ),
@@ -111,8 +118,6 @@ class FeaturedPage extends StatelessWidget {
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
 
-            type != null? Text(type, style: GoogleFonts.poppins(textStyle: type == "Gold" ?TextStyle(color: Color.fromARGB(255, 255, 191, 0), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600): type == "Silver"? TextStyle(color: Color.fromARGB(255, 169, 169, 169), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600): TextStyle(color: Color.fromARGB(255, 129, 138, 116), fontSize: 20, fontStyle: FontStyle.italic, fontWeight: FontWeight.w600),)): Text(""),
-
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,12 +132,12 @@ class FeaturedPage extends StatelessWidget {
                           style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
                                   color: Colors.black,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500)),
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w600)),
                         ),
                         const Padding(
                             padding: EdgeInsets.symmetric(vertical: 5)),
-                        for (var i = 0; i < snap["includes"].length; i++)
+                        for (var i = 0; i < includes.length; i++)
                           Container(
                             child: Row(
                               children: [
@@ -145,7 +150,7 @@ class FeaturedPage extends StatelessWidget {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 2)),
                                 Text(
-                                  snap["includes"][i],
+                                  includes[i],
                                   style: GoogleFonts.poppins(
                                       textStyle: TextStyle(
                                           fontSize: 15,
@@ -167,7 +172,7 @@ class FeaturedPage extends StatelessWidget {
                             "Cost",
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w500)),
+                                    fontSize: 19, fontWeight: FontWeight.w600)),
                           ),
                         ),
                         Container(
@@ -181,7 +186,7 @@ class FeaturedPage extends StatelessWidget {
                             Text(
                               price,
                               style: GoogleFonts.poppins(
-                                  fontSize: 15, fontWeight: FontWeight.w500),
+                                  fontSize: 17, fontWeight: FontWeight.w500),
                             ),
                           ],
                         ))
@@ -213,7 +218,6 @@ class FeaturedPage extends StatelessWidget {
                     date: date,
                     price: price,
                     type: type,
-                    time: time,
                     snap: snap,
                     image: image,
                     description: description,

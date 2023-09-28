@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_screen/Admin/AdminLogin/AdminLogin.dart';
 import 'package:login_screen/Widgets/Home/LoaderScreen/LoaderScreen.dart';
 import 'package:login_screen/Widgets/Home/Slider/SliderHome.dart';
 import 'package:login_screen/Widgets/Home/SlotContainer/SlotContainer.dart';
@@ -64,13 +65,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     _onItemTapped(int num) {
-      Navigator.push(
-          context,
-        MaterialPageRoute(
-          builder: (context) => Account(),
-        ));
+      if (Number != num) {
+        print("Changing");
+        setState(() {
+          Number = num;
+        });
+      }
     }
-    
+
     return Number == 0
         ? Scaffold(
             extendBodyBehindAppBar: false,
@@ -95,9 +97,7 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SliderHome(),
-
                         Padding(padding: EdgeInsets.symmetric(vertical: 13)),
-
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
@@ -144,6 +144,21 @@ class _HomeState extends State<Home> {
                               description: jsonData[i]["description"],
                               image: jsonData[i]["image"],
                               snap: jsonData[i]),
+                        Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                        Container(
+                          child: InkWell(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AdminLogin(),
+                                  )),
+                              child: Text(
+                                "Rise Up Live A Life",
+                                style: GoogleFonts.shadowsIntoLight(
+                                    textStyle: TextStyle(fontSize: 32)),
+                              )),
+                        ),
+                        Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                       ],
                     ),
                   )
@@ -174,8 +189,8 @@ class _HomeState extends State<Home> {
                         label: 'Account',
                       ),
                     ],
-                    currentIndex: Number,
                     selectedItemColor: Color.fromARGB(255, 255, 0, 0),
+                    // currentIndex: 0,
                     onTap: _onItemTapped,
                   )
                 : null,
