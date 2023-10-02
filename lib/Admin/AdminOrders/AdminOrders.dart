@@ -14,7 +14,7 @@ class _AdminOrdersState extends State<AdminOrders> {
   var snap = [];
 
   void handleCalled() async {
-    var snapshot = await FirebaseFirestore.instance.collection("orders").get();
+    var snapshot = await FirebaseFirestore.instance.collection("orders").orderBy("datePublished", descending: true).get();
 
     setState(() {
       snap = snapshot.docs; // Access the data from the DocumentSnapshot

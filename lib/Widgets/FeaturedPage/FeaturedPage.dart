@@ -118,13 +118,11 @@ class FeaturedPage extends StatelessWidget {
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
 
-            Container(
-              child: Row(
+            Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: Column(
+                  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -153,7 +151,7 @@ class FeaturedPage extends StatelessWidget {
                                   includes[i],
                                   style: GoogleFonts.poppins(
                                       textStyle: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w500)),
                                 ),
                               ],
@@ -162,7 +160,6 @@ class FeaturedPage extends StatelessWidget {
                         Padding(padding: EdgeInsets.symmetric(vertical: 2)),
                       ],
                     ),
-                  ),
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -186,7 +183,7 @@ class FeaturedPage extends StatelessWidget {
                             Text(
                               price,
                               style: GoogleFonts.poppins(
-                                  fontSize: 17, fontWeight: FontWeight.w500),
+                                  fontSize: 15, fontWeight: FontWeight.w500),
                             ),
                           ],
                         ))
@@ -195,7 +192,6 @@ class FeaturedPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
             // Padding(padding: EdgeInsets.symmetric(vertical: 10)),
             Padding(padding: EdgeInsets.symmetric(vertical: 2)),
             Flexible(

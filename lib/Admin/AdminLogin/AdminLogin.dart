@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Admin/AdminOrders/AdminOrders.dart';
 
@@ -13,7 +14,10 @@ class _AdminLoginState extends State<AdminLogin> {
   TextEditingController pass = TextEditingController();
 
   handleSubmit() {
-    if (pass.text == "123456") {
+    print(pass.text);
+    print(dotenv.env["ADMIN_PASS"]);
+
+    if (pass.text == dotenv.env["ADMIN_PASS"]) {
       print("came here");
       Navigator.push(
           context,
@@ -21,6 +25,16 @@ class _AdminLoginState extends State<AdminLogin> {
             builder: (context) => AdminOrders(),
           ));
     }
+  }
+
+  handleLoad() async {
+    await dotenv.load();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    handleLoad();
   }
 
   @override
@@ -72,7 +86,11 @@ class _AdminLoginState extends State<AdminLogin> {
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: InkWell(
                     onTap: () => handleSubmit(),
-                    child: Text("View Orders", style: GoogleFonts.poppins(textStyle: TextStyle(color: Colors.white)),),
+                    child: Text(
+                      "View Orders",
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(color: Colors.white)),
+                    ),
                   ),
                 )
               ],

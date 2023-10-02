@@ -1,12 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:login_screen/Admin/AdminLogin/AdminLogin.dart';
-import 'package:login_screen/Admin/AdminOrders/AdminOrders.dart';
 import 'package:login_screen/Widgets/Home/Home.dart';
 import 'package:login_screen/Widgets/Login/LoginController.dart';
-import 'dart:convert' show json;
-import 'package:flutter/services.dart' show rootBundle;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,9 +48,9 @@ class _MyAppState extends State<MyApp> {
             );
           }
 
-          return Home();
+          return LoginController();
         },
       ),
     );
   }
-}
+} 

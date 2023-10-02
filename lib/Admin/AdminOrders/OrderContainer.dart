@@ -114,7 +114,7 @@ class OrderContainer extends StatelessWidget {
               ),
               Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
               Container(
-                  width: 250,
+                  width: 290,
                   child: Row(
                     children: [
                       for (var i = 0; i < snap["Date"].length; i++)

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_screen/Admin/AdminLogin/AdminLogin.dart';
@@ -7,6 +8,7 @@ import 'package:login_screen/Widgets/Home/Slider/SliderHome.dart';
 import 'package:login_screen/Widgets/Home/SlotContainer/SlotContainer.dart';
 import 'package:login_screen/loaderLine/loaderLines.dart';
 import 'package:login_screen/Widgets/Account/Account.dart';
+import 'dart:math';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -19,16 +21,22 @@ class _HomeState extends State<Home> {
   bool loaderScreen = false;
   List jsonData = [];
   String loaderString = "";
+  bool connectionStatus = false;
 
   int Number = 0;
 
   void handleLoadingScreen() {
-    var dataFound = data[0];
-    String stringForLoadre = dataFound.values.last;
-    setState(() {
-      loaderString = stringForLoadre;
-    });
-  }
+  // Generate a random index within the range of data's length
+  int randomIndex = Random().nextInt(data.length);
+
+  // Get the line associated with the random index
+  var dataFound = data[randomIndex];
+  String? stringForLoader = dataFound['line'];
+
+  setState(() {
+    loaderString = stringForLoader!;
+  });
+}
 
   @override
   void dispose() {
@@ -48,14 +56,34 @@ class _HomeState extends State<Home> {
 
   void handleLoaderScreen() {
     Future.delayed(Duration(seconds: 7), () {
-      setState(() {
-        loaderScreen = true;
-      });
+      if (connectionStatus) {
+        setState(() {
+          loaderScreen = true;
+        });
+      }
     });
+  }
+
+  void connectionCheck() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      setState(() {
+        connectionStatus = true;
+      });
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        connectionStatus = true;
+      });
+    } else {
+      setState(() {
+        connectionStatus = false;
+      });
+    }
   }
 
   @override
   void initState() {
+    connectionCheck();
     handleDataFromDB();
     handleLoadingScreen();
     handleLoaderScreen();
@@ -166,7 +194,7 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      LoaderScreen(loaderString: loaderString),
+                      LoaderScreen(loaderString: loaderString, network: connectionStatus),
                     ],
                   ),
             bottomNavigationBar: loaderScreen

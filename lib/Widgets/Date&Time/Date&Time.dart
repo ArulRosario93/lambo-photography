@@ -1,7 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:login_screen/Widgets/Container/ContainerDates/ContainerDates.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:login_screen/Widgets/FeaturedPage/FeaturedPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -66,7 +64,7 @@ class _DateAndTimeState extends State<DateAndTime> {
   @override
   void initState() {
     setState(() {
-      finalDate.replaceRange(0, finalDate.length, []);
+      finalDate = [];
     });
     widget.snap["FeaturedAvailable"] ? handleCalled() : null;
     super.initState();
@@ -75,9 +73,16 @@ class _DateAndTimeState extends State<DateAndTime> {
   @override
   Widget build(BuildContext context) {
     void handledateSelected(String reversedFormat) {
-      setState(() {
-        finalDate.add(reversedFormat);
-      });
+
+      if (finalDate.length == 0) {
+        setState(() {
+          finalDate.add(reversedFormat);
+        });
+      } else {
+        setState(() {
+          finalDate.add(reversedFormat);
+        });
+      }
     }
 
     void onSubmit() {
@@ -97,6 +102,16 @@ class _DateAndTimeState extends State<DateAndTime> {
         print("Extracted Date: $reversedFormat");
 
         handledateSelected(reversedFormat);
+
+        for (var i = 0; i < finalDate.length - 1; i++) {
+          for (var j = i + 1; j < finalDate.length; j++) {
+            if (finalDate[i] == finalDate[j]) {
+              setState(() {
+                finalDate.removeAt(i);
+              });
+            }
+          }
+        }
       }
     }
 
@@ -106,6 +121,8 @@ class _DateAndTimeState extends State<DateAndTime> {
       setState(() {
         dateSelected = dateRangePickerSelectionChangedArgs.value;
       });
+
+      print(dateRangePickerSelectionChangedArgs.value);
     }
 
     return Scaffold(
@@ -139,9 +156,11 @@ class _DateAndTimeState extends State<DateAndTime> {
                 SizedBox(
                     height: 350,
                     width: 300,
-                    // color: Colors.redAccent,
                     child: SfDateRangePicker(
-                      // maxDate: l stDate,
+                      monthCellStyle: DateRangePickerMonthCellStyle(
+                          disabledDatesTextStyle: GoogleFonts.poppins(
+                        color: Colors.redAccent,
+                      )),
                       initialDisplayDate: DateTime.now(),
                       enablePastDates: false,
                       selectionTextStyle:

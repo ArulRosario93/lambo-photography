@@ -14,6 +14,7 @@ class DateTimeSelection extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            width: 280,
                   child: Row(
                     children: [
                       Text("Date: ", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 15, fontWeight:FontWeight.w600)),),

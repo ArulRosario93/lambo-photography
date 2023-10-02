@@ -6,6 +6,7 @@ import 'package:login_screen/Widgets/BillingScreen/BillingItems/BillingItems.dar
 import 'package:login_screen/Widgets/BillingScreen/BillingSummary/BillingSummary.dart';
 import 'package:login_screen/Widgets/BillingScreen/DateTimeSelection/DateTimeSelection.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_screen/Widgets/Home/Home.dart';
 import 'package:login_screen/Widgets/LocationPage/LocationPage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,7 +42,8 @@ class _BillingScreenState extends State<BillingScreen> {
   bool locationSubmit = false;
   String Location = "";
   Razorpay razorpay = Razorpay();
-  
+
+
   var paymentID = "";
   var orderID = "";
   var dropdownValue = "Offline";
@@ -57,17 +59,17 @@ class _BillingScreenState extends State<BillingScreen> {
     Navigator.pop(context);
   }
 
-  handleLoad() async{
-      await dotenv.load();
+  handleLoad() async {
+    await dotenv.load();
   }
 
   @override
   void initState() {
     super.initState();
     handleLoad();
-    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
-    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
-    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
+    // razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
+    // razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
+    // razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
   }
 
   @override
@@ -78,9 +80,18 @@ class _BillingScreenState extends State<BillingScreen> {
 
   @override
   Widget build(BuildContext context) {
+  String val = widget.price;
+
+  int amount = int.parse(val);
+
+  double gst = amount * 18 / 100;
+
+  double grandAmount = amount + gst;
+
+
     void createRazorpayOrder() async {
       final String? apiKey = dotenv.env['API_KEY'];
-      final String? apiSecret = dotenv.env['API_SECRET'];;
+      final String? apiSecret = dotenv.env['API_SECRET'];
 
       final String basicAuth =
           'Basic ' + base64Encode(utf8.encode('$apiKey:$apiSecret'));
@@ -117,7 +128,10 @@ class _BillingScreenState extends State<BillingScreen> {
           'order_id': responseData['id'], // Generate order_id using Orders API
           'description': 'Shoot Bookins',
           'timeout': 120,
-          'prefill': {'contact': FirebaseAuth.instance.currentUser!.phoneNumber, 'email': 'test@razorpay.com'},
+          'prefill': {
+            'contact': FirebaseAuth.instance.currentUser!.phoneNumber,
+            'email': 'test@razorpay.com'
+          },
         };
 
         try {
@@ -146,17 +160,25 @@ class _BillingScreenState extends State<BillingScreen> {
       var data = {
         "Date": widget.date,
         "PhoneNumber": FirebaseAuth.instance.currentUser!.phoneNumber,
-        "Payment": "Online 4000",
-        "PaymentID": paymentID,
-        "OrderID": orderID,
+        "Payment": "Offline",
+        "PaymentID": "NIL",
+        "OrderID": "NIL",
+        "Grand Total": grandAmount,
         "Shoot": widget.name,
         "type": widget.type,
         "location": Location,
+        "datePublished": DateTime.now()
       };
 
       await FirebaseFirestore.instance.collection("orders").doc().set(
         data,
       );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ));
     }
 
     return Scaffold(
@@ -425,13 +447,23 @@ class _BillingScreenState extends State<BillingScreen> {
                           ],
                         ),
                         Container(
-                          child: Text(
-                            "Change",
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 255, 17, 0))),
-                          ),
-                        )
+                              child: InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LocationPage(
+                                          handleLocation: handleLocation),
+                                    )),
+                                child: Text(
+                                  "Change",
+                                  style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                          color: Color.fromARGB(255, 255, 17, 0),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15)),
+                                ),
+                              ),
+                            )
                       ],
                     ),
                   )
@@ -455,14 +487,15 @@ class _BillingScreenState extends State<BillingScreen> {
                           }),
                           items: [
                             DropdownMenuItem(
+                                enabled: false,
                                 value: "Online",
                                 child: InkWell(
-                                    onTap: () => createRazorpayOrder(),
+                                    // onTap: () => createRazorpayOrder(),
                                     child: Text(
-                                      "Pay Advance",
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.black),
-                                    ))),
+                                  "Pay Advance",
+                                  style:
+                                      GoogleFonts.poppins(color: const Color.fromARGB(255, 183, 183, 183)),
+                                ))),
                             DropdownMenuItem(
                               value: "Offline",
                               child: Text(
@@ -484,7 +517,7 @@ class _BillingScreenState extends State<BillingScreen> {
                             spreadRadius: 1)
                       ]),
                   padding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
                   child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 20),
@@ -537,10 +570,6 @@ class _BillingScreenState extends State<BillingScreen> {
     * 2. Error Description
     * 3. Metadata
     * */
-
-    print("Called handlePaymentErrorResponse");
-    print("Called handlePaymentErrorResponse");
-    print("Called handlePaymentErrorResponse");
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) async {
@@ -561,10 +590,6 @@ class _BillingScreenState extends State<BillingScreen> {
     setState(() {
       amountPayed = true;
     });
-
-    print("Called handlePaymentSuccessResponse");
-    print("Called handlePaymentSuccessResponse");
-    print("Called handlePaymentSuccessResponse");
   }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
