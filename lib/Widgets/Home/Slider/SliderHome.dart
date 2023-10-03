@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_screen/Widgets/Home/Slider/SliderNow/SliderNow.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SliderHome extends StatelessWidget {
@@ -20,7 +21,8 @@ class SliderHome extends StatelessWidget {
               items: [
                 Container(
                   height: 80,
-                  child: Stack(
+                  child: InkWell(
+                    child: Stack(
                     fit: StackFit.expand,
                     alignment: AlignmentDirectional.centerStart,
                     children: [
@@ -45,18 +47,23 @@ class SliderHome extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         image: const DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(
-                            "https://img.freepik.com/free-photo/happy-family-outdoors-spending-time-together_1328-2486.jpg"
+                          image: AssetImage(
+                            "assets/marriageShoot1.jpg"
                           )
                           )
                         ),
                       ),
                     ],
                   ),
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => const SliderNow(name: "Marriage Shoot", image: "assets/marriageShoot1.jpg")),
+                  ),
                 ),
                 Container(
                   height: 80,
-                  child: Stack(
+                  child: InkWell(
+                    child: Stack(
                     fit: StackFit.expand,
                     alignment: AlignmentDirectional.centerStart,
                     children: [
@@ -81,18 +88,23 @@ class SliderHome extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           image: const DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                              "https://e1.pxfuel.com/desktop-wallpaper/417/521/desktop-wallpaper-babies-posted-by-zoey-cunningham-baby-girl.jpg"
+                            image: AssetImage(
+                              "assets/marriageShoot2.jpg"
                             )
                           )
                         ),
                       ),
                     ],
                   ),
+                    onTap: () => showDialog(
+                                    context: context,
+                                    builder: (context) => const SliderNow(name: "Marriage Shoot", image: "assets/marriageShoot2.jpg"))
+                  ),
                 ),
                 Container(
                   height: 80,
-                  child: Stack(
+                  child: InkWell(
+                    child: Stack(
                     fit: StackFit.expand,
                     alignment: AlignmentDirectional.centerStart,
                     children: [
@@ -117,14 +129,18 @@ class SliderHome extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           image: const DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                              "https://photographypro.com/wp-content/uploads/2020/06/Children-Photography-56.jpg"
+                            image: AssetImage(
+                              "assets/marriageShoot3.jpg"
                             )
                           )
                         ),
                       ),
                     ],
                   ),
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => const SliderNow(name: "Marriage Shoot", image: "assets/marriageShoot3.jpg"))
+                  )
                 ),
             ],
             options: CarouselOptions(

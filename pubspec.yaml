@@ -91,6 +91,9 @@ flutter:
     - assets/image.jpg
     - assets/image1.jpg
     - assets/image2.jpg
+    - assets/marriageShoot1.jpg
+    - assets/marriageShoot2.jpg
+    - assets/marriageShoot3.jpg
     - assets/loginimage.png
     - assets/icon.png
     # - images/a_dot_ham.jpeg

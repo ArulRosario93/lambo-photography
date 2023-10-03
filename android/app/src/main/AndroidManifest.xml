@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.login_screen">
+    package="com.boss.login_screen">
     <queries>
         <intent>
         <action android:name="android.intent.action.SENDTO" />
