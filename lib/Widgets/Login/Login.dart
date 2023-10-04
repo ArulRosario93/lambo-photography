@@ -287,7 +287,7 @@ class _LoginState extends State<Login> {
                   // Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                   Flexible(
                     child: Container(
-                      color: Colors.black,
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       // alignment: Alignment.center,
                       // width: 300,
                       child: AnimatedOpacity(
@@ -304,7 +304,7 @@ class _LoginState extends State<Login> {
                                     image: AssetImage(
                                       "assets/icon.png",
                                     ),
-                                    fit: BoxFit.cover))),
+                                    fit: BoxFit.contain))),
                       ),
                     ),
                     flex: 3,

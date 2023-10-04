@@ -1,4 +1,4 @@
-package com.example.login_screen
+package com.boss.login_screen
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterFragmentActivity
